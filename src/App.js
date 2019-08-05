@@ -2,6 +2,8 @@ import React from 'react';
 import TodoList from './components/TodoComponents/TodoList'
 import TodoForm from './components/TodoComponents/TodoForm'
 import './components/TodoComponents/Todo.css';
+import './styles.scss'
+import { useLocalStorage } from "./hooks/useLocalStorage"
 
 const todoData = [
   {
@@ -23,6 +25,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      name: 'Megan',
       todo: todoData,
     };
   }
@@ -64,14 +67,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="header">
-          <h1>To-do List</h1>
+          <h1>{this.state.name}'s To-do List</h1>
+          <TodoForm addItem={this.addItem} />
         </div>
         <TodoList
           todo={this.state.todo}
           toggleItem={this.toggleItem}
           clearCompleted={this.clearCompleted}
         />
-        <TodoForm addItem={this.addItem} />
       </div>
     );
   }
