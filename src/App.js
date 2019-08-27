@@ -3,7 +3,6 @@ import TodoList from './components/TodoComponents/TodoList'
 import TodoForm from './components/TodoComponents/TodoForm'
 import './components/TodoComponents/Todo.css';
 import './styles.scss'
-import { useLocalStorage } from "./hooks/useLocalStorage"
 
 const todoData = [
   {
@@ -30,6 +29,10 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    return localStorage.getItem('todos') ? this.setState({todo: JSON.parse(localStorage.getItem('todos'))}) : null
+  }
+
   toggleItem = id => {
     console.log(id);
     this.setState({
@@ -46,21 +49,23 @@ class App extends React.Component {
     });
   };
 
-  addItem = itemName => {
+  addItem = async itemName => {
     const newItem = {
       task: itemName,
       id: Date.now(),
       completed: false
     };
-    this.setState({
+    await this.setState({
       todo: [...this.state.todo, newItem]
-    });
+    })
+    localStorage.setItem("todos", JSON.stringify(this.state.todo))
   };
 
-  clearCompleted = () => {
-    this.setState({
+  clearCompleted = async () => {
+    await this.setState({
       todo: this.state.todo.filter(item => !item.completed)
     });
+    localStorage.setItem('todos', JSON.stringify(this.state.todo))
   };
 
   render() {
@@ -81,5 +86,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
